@@ -1,0 +1,7 @@
+---
+# tasks file for create-iam
+- include: install.yaml
+  when: aws_k8s_iam_remove | default(False) | bool == False
+
+- include: remove.yaml
+  when: aws_k8s_iam_remove | default(False) | bool == False
