@@ -1,0 +1,7 @@
+---
+# tasks file for create-iam
+- include: install.yaml
+  when: create_iam_remove | default(False) | bool == False
+
+- include: remove.yaml
+  when: create_iam_remove | default(False) | bool == False

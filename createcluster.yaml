@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  connection: local
+  vars_files:
+    - vars/all.yaml
+  roles:
+    - create-iam
