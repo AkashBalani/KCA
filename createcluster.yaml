@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+   - name: Verify Docker is installed
+     yum:
+       name: docker
+       state: present
+       update_homebrew: true
+       #update_cache: true --> Doesn't work on Mac
+
+   - name: Start docker
+     service:
+       name: docker
+       state: started
