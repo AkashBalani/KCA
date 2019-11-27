@@ -11,3 +11,14 @@
   with_items:
     - "{{ iam_master_role }}"
     - "{{ iam_worker_role }}"
+
+- name: create master iam role policy
+  iam_policy:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ aws_region }}"
+    iam_type: role
+    iam_name: "{{ iam_master_role }}"
+    policy_name: "{{ iam_master_policy }}"
+    state: present
+    policy_document: "files/kubernetes-master-policy.json"
