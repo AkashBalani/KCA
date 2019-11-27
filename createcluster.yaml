@@ -1,39 +1,7 @@
 ---
 - hosts: localhost
   connection: local
-  tasks:
-   # - name: Verify Docker is installed
-   #   yum:
-   #     name: docker
-   #     state: present
-   #     update_homebrew: true #--> (Warning!) This will update all packages
-   #     #update_cache: true --> Doesn't work on Mac
-   #
-   # # - name: Install Docker using Cask --> Aparently this installs docker and not docker-machine
-   # #   shell: brew cask install docker
-   #
-   # - name: Upgrade docker
-   #   shell: brew upgrade docker
-   #
-   # - name: Tapping Services for Package manager
-   #   shell: brew tap homebrew/services
-   #
-   # - name: Start docker service
-   #   shell: brew services start docker-machine # Gotta make this docker instead of docker machine
-   #
-   # - name: Remove older versions of formulae
-   #   shell: brew cleanup
-
-   # - name: Add Kubernetes' YUM repo #--> Doesn't work
-   #   yum_repository:
-   #     name: Kubernetes
-   #     description: Kubernetes YUM repository
-   #     baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
-   #     gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-   #     gpgcheck: yes
-
-   - name: Install Kubelet
-     apt:
-       name: kubelet-1.14.0
-       state: present
-       update_cache: true
+  vars_files:
+    - vars/all.yaml
+  roles:
+    - create-iam
