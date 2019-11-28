@@ -4,4 +4,5 @@
   vars_files:
     - vars/all.yaml
   roles:
-    - create-iam
+    #- create-iam
+    - create-vpc

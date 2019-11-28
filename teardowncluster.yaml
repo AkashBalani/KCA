@@ -1,6 +1,8 @@
 ---
 - hosts: localhost
   connection: local
-  tasks:
-   - name: Uninstall docker
-     shell: brew uninstall docker
+  vars_files:
+    - vars/all.yaml
+  roles:
+    #- create-iam
+    - delete-vpc

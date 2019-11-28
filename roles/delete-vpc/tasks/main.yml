@@ -1,0 +1,12 @@
+---
+# tasks file for delete-vpc
+- name: Delete K8s IGW
+  ec2_vpc_igw:
+    state: absent
+    vpc_id: # --> Need to find a way to find this
+
+- name: Delete K8s vpc
+  ec2_vpc_net:
+    state: absent
+    name: "{{ k8s_cluster_name }}_vpc"
+    cidr_block: "{{ vpc_network_cidr }}"

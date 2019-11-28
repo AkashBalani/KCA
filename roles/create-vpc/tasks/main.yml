@@ -1,2 +1,40 @@
 ---
 # tasks file for create-vpc
+- name: List AWS Details
+  debug:
+    msg: "AWS region - {{ aws_region }}, AZ - {{ vpc_subnet_az }}"
+
+- name: create an AWS VPC for use with kubernetes
+  ec2_vpc_net:
+    name: "{{ k8s_cluster_name }}_vpc"
+    state: present
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ aws_region }}"
+    cidr_block: "{{ vpc_network_cidr }}"
+    resource_tags: { "Name": "kubernetes_vpc", "KubernetesCluster": "{{ k8s_cluster_name }}" }
+  register: vpc_facts
+
+- name: create AWS IGW
+  ec2_vpc_igw:
+    resource_tags: { "Name": "kubernetes_igw", "KubernetesCluster": "{{ k8s_cluster_name }}" }
+    vpc_id: "{{ vpc_facts.vpc.id }}"
+    state: present
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ aws_region }}"
+    #internet_gateway: True
+    #wait: True
+    # subnets:
+    # - cidr: "{{ vpc_public_subnet_cidr }}"
+    #   az: "{{ vpc_subnet_az }}"
+    #   resource_tags: { "Name" : "{{ vpc_public_subnet_name }}", "KubernetesCluster": "{{ k8s_cluster_name }}" }
+    # - cidr: "{{ vpc_private_subnet_cidr }}"
+    #   az: "{{ vpc_subnet_az }}"
+    #   resource_tags: { "Name" : "{{ vpc_private_subnet_name }}", "KubernetesCluster": "{{ k8s_cluster_name }}" }
+    # route_tables:
+    #   - subnets:
+    #       - "{{ vpc_public_subnet_cidr }}"
+    #     routes:
+    #       - dest: 0.0.0.0/0
+    #         gw: igw

@@ -16,12 +16,12 @@ vpc_private_subnet_cidr: "172.20.1.0/24"
 
 vpc_network_name: "kubernetes"
 vpc_network_cidr: "172.20.0.0/16"
-vpc_subnet_az: "us-west-1"
+vpc_subnet_az: "us-east-1a"
 vpc_security_group_name: "allow_k8s"
 
 aws_access_key: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
 aws_secret_key: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
-aws_region: "{{ lookup('env','AWS_REGION') }}"
+aws_region: "us-east-1"
 
 iam_master_role: "k8s-master-role"
 iam_master_policy: "k8s-master-policy"
