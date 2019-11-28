@@ -1,9 +1,16 @@
 ---
 # tasks file for delete-vpc
+- name: Fetch VPC Facts
+  ec2_vpc_net_facts:
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ aws_region }}"
+  register: vpc_facts
+
 - name: Delete K8s IGW
   ec2_vpc_igw:
     state: absent
-    vpc_id: # --> Need to find a way to find this
+    vpc_id: "{{ vpc_facts.vpcs | selectattr('cidr_block', 'equals' ,'172.20.0.0/16') }}" # --> Need to find a way to find this
 
 - name: Delete K8s vpc
   ec2_vpc_net:

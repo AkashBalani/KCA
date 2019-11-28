@@ -23,6 +23,36 @@
     aws_access_key: "{{ aws_access_key }}"
     aws_secret_key: "{{ aws_secret_key }}"
     region: "{{ aws_region }}"
+  register: igw_facts
+
+- name: create AWS Route Table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc_facts.vpc.id }}"
+    state: present
+    aws_access_key: "{{ aws_access_key }}"
+    aws_secret_key: "{{ aws_secret_key }}"
+    region: "{{ aws_region }}"
+    subnets:
+      - "{{ vpc_public_subnet_cidr }}"
+    routes:
+       - dest: 0.0.0.0/0
+         gateway_id: "{{ igw_facts.gateway_id }}"
+
+- name: create subnets for IGW
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc_facts.vpc.id }}"
+    cidr: "{{ vpc_public_subnet_cidr }}"
+    az: "{{ vpc_subnet_az }}"
+    resource_tags: { "Name" : "{{ vpc_public_subnet_name }}", "KubernetesCluster": "{{ k8s_cluster_name }}" }
+
+- name: create subnets for IGW 2
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{ vpc_facts.vpc.id }}"
+    cidr: "{{ vpc_private_subnet_cidr }}"
+    az: "{{ vpc_subnet_az }}"
+    resource_tags: { "Name" : "{{ vpc_private_subnet_name }}", "KubernetesCluster": "{{ k8s_cluster_name }}" }
     #internet_gateway: True
     #wait: True
     # subnets:
